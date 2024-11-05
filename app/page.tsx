@@ -57,7 +57,7 @@ export default function Component() {
             transition={{ duration: 0.5 }}
             className="text-center"
           >
-            <h2 className="text-4xl font-bold mb-4">Hi, I'm Jane Doe</h2>
+            <h2 className="text-4xl font-bold mb-4">Hello, I am Stephen Mola</h2>
             <p className="text-xl mb-8">Full-stack developer passionate about creating beautiful and functional web applications.</p>
             <Button asChild>
               <a href="#contact">Get in touch</a>
