@@ -21,7 +21,7 @@ export default function Component() {
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Jane Doe</h1>
+          <h1 className="text-2xl font-bold">Stephen Mola</h1>
           <nav className="hidden md:flex space-x-4">
             <a href="#about" className="hover:text-primary transition-colors">About</a>
             <a href="#skills" className="hover:text-primary transition-colors">Skills</a>
