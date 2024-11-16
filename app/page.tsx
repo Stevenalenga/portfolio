@@ -7,14 +7,11 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import ErrorMessage from '../errors/errors' 
 
-import Image1 from '@/public/images/image1.jpg'
-import Image2 from '@/public/images/image2.jpg'
-import Image3 from '@/public/images/image3.jpg'
-
 const backgroundImages = [
-  Image1,
-  Image2,
-  Image3,
+  '/images/apiroutes.png',
+  '/images/code.png',
+  '/images/dashboard.png',
+  '/images/visualpages.png',
 ]
 
 export default function Component() {
@@ -111,7 +108,7 @@ export default function Component() {
         </section>
 
         {/* Error Message */}
-        <ErrorMessage message="An error occurred. Please try again." />
+       {/* <ErrorMessage message="An error occurred. Please try again." />*\}
 
         {/* Projects Section */}
         <section id="projects" className="py-20">
