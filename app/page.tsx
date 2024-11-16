@@ -5,11 +5,16 @@ import { motion } from 'framer-motion'
 import { Github, Linkedin, Mail, Menu, X } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import ErrorMessage from '../errors/errors' 
+
+import Image1 from '@/public/images/image1.jpg'
+import Image2 from '@/public/images/image2.jpg'
+import Image3 from '@/public/images/image3.jpg'
 
 const backgroundImages = [
-  '/placeholder.svg?height=1080&width=1920&text=Image+1',
-  '/placeholder.svg?height=1080&width=1920&text=Image+2',
-  '/placeholder.svg?height=1080&width=1920&text=Image+3',
+  Image1,
+  Image2,
+  Image3,
 ]
 
 export default function Component() {
@@ -68,7 +73,7 @@ export default function Component() {
         <section id="about" className="relative py-20 overflow-hidden">
           {backgroundImages.map((image, index) => (
             <div
-              key={image}
+              key={index}
               className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out"
               style={{
                 backgroundImage: `url(${image})`,
@@ -92,7 +97,7 @@ export default function Component() {
         </section>
 
         {/* Skills Section */}
-        <section id="skills" className="py-20">
+        <section id="skills" className="py-20" style={{ backgroundImage: "url('placeholder-image-url.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}>
           <h2 className="text-3xl font-bold mb-8 text-center">My Skills</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {['JavaScript', 'React', 'Node.js', 'Python', 'SQL', 'Git', 'AWS', 'Docker', 'Typescript', 'Data Analysis', 'Data Visulisation', 'PowerBI'].map((skill) => (
@@ -104,6 +109,9 @@ export default function Component() {
             ))}
           </div>
         </section>
+
+        {/* Error Message */}
+        <ErrorMessage message="An error occurred. Please try again." />
 
         {/* Projects Section */}
         <section id="projects" className="py-20">
