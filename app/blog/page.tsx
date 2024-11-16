@@ -70,7 +70,7 @@ export default function DevBlog() {
                 <CardTitle>About Me</CardTitle>
               </CardHeader>
               <CardContent>
-                <p>Hi, I'm a passionate developer sharing my journey and insights in web development, focusing on React, Next.js, and TypeScript.</p>
+                <p>Hi, I&apos;m a passionate developer sharing my journey and insights in web development, focusing on React, Next.js, and TypeScript.</p>
               </CardContent>
             </Card>
             <Card>

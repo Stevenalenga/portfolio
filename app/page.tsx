@@ -5,12 +5,12 @@ import { motion } from 'framer-motion'
 import { Github, Linkedin, Mail, Menu, X } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import ErrorMessage from '../errors/errors' 
+// import ErrorMessage from '../errors/errors' 
 
 const backgroundImages = [
   '/images/apiroutes.png',
   '/images/code.png',
-  '/images/dashboard.png',
+  '/images/dashboards.png',
   '/images/visualpages.png',
 ]
 
