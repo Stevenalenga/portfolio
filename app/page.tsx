@@ -89,7 +89,7 @@ export default function Component() {
         className="text-center text-white px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto relative z-10 [text-shadow:_0_1px_2px_rgba(0,0,0,0.8)]"
           >
         <h2 className="text-4xl font-bold mb-4">Hello, I am Stephen Mola</h2>
-        <p className="text-xl mb-8">Full-stack developer passionate about creating beautiful and functional web applications.</p>
+        <p className="text-xl mb-8">Full-stack developer passionate about creating beautiful and functional web, APIs and Mobile applications.</p>
         <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
           <a href="#contact">Get in touch</a>
         </Button>
