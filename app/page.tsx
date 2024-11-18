@@ -1,5 +1,5 @@
 'use client'
-
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
@@ -45,6 +45,7 @@ export default function Component() {
             <a href="#skills" className="hover:text-primary transition-colors">Skills</a>
             <a href="#projects" className="hover:text-primary transition-colors">Projects</a>
             <a href="#contact" className="hover:text-primary transition-colors">Contact</a>
+            <a href="/blog" className="hover:text-primary transition-colors">Blog</a>
           </nav>
           <Button variant="ghost" size="icon" className="md:hidden" onClick={toggleMenu}>
             {isMenuOpen ? <X /> : <Menu />}
