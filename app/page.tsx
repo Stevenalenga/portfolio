@@ -1,5 +1,6 @@
 'use client'
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
@@ -105,7 +106,7 @@ export default function Component() {
     {['aws', 'css', 'data-analysis', 'data-visualisation', 'docker', 'firebase', 'git', 'javascript', 'mongoDB', 'nodejs', 'postgres', 'python', 'react', 'sql', 'typescript', 'office'].map((skill) => (
       <Card key={skill}>
         <CardHeader>
-          <img
+          <Image
             src={`/assets/${skill.toLowerCase()}.png`}
             alt={`${skill} logo`}
             width={100}
@@ -161,25 +162,25 @@ export default function Component() {
               <div className="flex space-x-4">
                 <Button variant="outline" size="icon">
                     <a href="https://github.com/Stevenalenga" target="_blank" rel="noopener noreferrer">
-                    <img src="/socials/github.png" alt="GitHub" className="h-6 w-6" />
+                    <Image src="/socials/github.png" alt="GitHub" className="h-6 w-6" />
                     <span className="sr-only">GitHub</span>
                     </a>
                 </Button>
                 <Button variant="outline" size="icon">
                   <a href="https://www.linkedin.com/in/stephen-mola/" target="_blank" rel="noopener noreferrer">
-                  <img src="/socials/linkedin.png" alt="Linked In" className="h-6 w-6" />
+                  <Image src="/socials/linkedin.png" alt="Linked In" className="h-6 w-6" />
                     <span className="sr-only">LinkedIn</span>
                   </a>
                 </Button>
                 <Button variant="outline" size="icon">
                   <a href="mailto:stevenkmola@gmail.com">
-                  <img src="/socials/email.png" alt="Email" className="h-6 w-6" />
+                  <Image src="/socials/email.png" alt="Email" className="h-6 w-6" />
                     <span className="sr-only">Email</span>
                   </a>
                 </Button>
                 <Button variant="outline" size="icon">
                   <a href="https://wa.link/f73yev" target="_blank" rel="noopener noreferrer">
-                  <img src="/socials/whatsappdark.png" alt="Whatsapp" className="h-6 w-6" />
+                  <Image src="/socials/whatsappdark.png" alt="Whatsapp" className="h-6 w-6" />
                   <span className="sr-only">Whatsapp</span>
                   </a>
                 </Button>
