@@ -126,12 +126,12 @@ export default function Component() {
           <h2 className="text-3xl font-bold mb-8 text-center">My Projects</h2>
           <div className="grid md:grid-cols-2 gap-8">
             {[
-              { title: 'E-commerce Platform', description: 'A full-stack e-commerce solution built with React and Node.js' },
-              { title: 'Task Management App', description: 'A productivity app created using React Native and Firebase' },
-              { title: 'Data Visualization Dashboard', description: 'An interactive dashboard built with D3.js and Vue.js' },
-              { title: 'AI Chess', description: 'A machine learning powered chess using Python and TensorFlow meant to help you improve your game' },
-              { title: 'My Maps', description: 'An application meant to share secret spots and locations with friends or general pubic' },
-              { title: 'Porfolio Page', description: 'A site shows developers skills and projects ' }
+              { title: 'E-commerce Platform', description: 'A full-stack e-commerce solution built with React and Node.js' ,url: "https://github.com/Stevenalenga/onlinestores"},
+              { title: 'Task Management App', description: 'A productivity app created using React Native and Firebase',url: "https://github.com/Stevenalenga/todo" },
+              { title: 'Data Visualization Dashboard', description: 'An interactive dashboard built with D3.js and Vue.js',url: "https://github.com/Stevenalenga/worko" },
+              { title: 'AI Chess', description: 'A machine learning powered chess using Python and TensorFlow meant to help you improve your game' ,url: "https://github.com/Stevenalenga/AI-Chess"},
+              { title: 'My Maps', description: 'An application meant to share secret spots and locations with friends or general pubic',url: "https://github.com/Stevenalenga/maps" },
+              { title: 'Porfolio Page', description: 'A site shows developers skills and projects ',url: "https://github.com/Stevenalenga/portfolio" }
             ].map((project, index) => (
               <motion.div
                 key={index}
@@ -145,7 +145,9 @@ export default function Component() {
                     <CardDescription>{project.description}</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <Button variant="outline">View Project</Button>
+                    <Button variant="outline" asChild>
+                      <a href={project.url} target="_blank" rel="noopener noreferrer">View Project</a>
+                    </Button>
                   </CardContent>
                 </Card>
               </motion.div>
