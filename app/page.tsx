@@ -1,5 +1,5 @@
 'use client'
-import { SpeedInsights } from "@vercel/speed-insights/next"
+// import { SpeedInsights } from "@vercel/speed-insights/next"
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
@@ -39,7 +39,7 @@ export default function Component() {
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center flex-wrap">
           <h1 className="text-2xl font-bold">Stephen Mola</h1>
           <nav className="hidden md:flex space-x-4">
             <a href="#about" className="hover:text-primary transition-colors">About</a>
@@ -56,7 +56,7 @@ export default function Component() {
 
       {/* Mobile Menu */}
       <motion.nav 
-        className="fixed top-0 right-0 bottom-0 w-64 bg-background z-40 p-4 flex flex-col justify-center md:hidden"
+        className="fixed top-0 right-0 bottom-0 w-full bg-background z-40 p-4 flex flex-col justify-center md:hidden"
         initial="closed"
         animate={isMenuOpen ? "open" : "closed"}
         variants={menuVariants}
@@ -65,6 +65,7 @@ export default function Component() {
         <a href="#skills" className="py-2 hover:text-primary transition-colors" onClick={toggleMenu}>Skills</a>
         <a href="#projects" className="py-2 hover:text-primary transition-colors" onClick={toggleMenu}>Projects</a>
         <a href="#contact" className="py-2 hover:text-primary transition-colors" onClick={toggleMenu}>Contact</a>
+        <a href="/blog" className="py-2 hover:text-primary transition-colors" onClick={toggleMenu}>Blog</a>
       </motion.nav>
 
       {/* Main Content */}
@@ -72,54 +73,51 @@ export default function Component() {
         {/* About Section */}
         <section id="about" className="relative py-40 overflow-hidden"> 
           {backgroundImages.map((image, index) => (
-        <div
-          key={index}
-          className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out"
-          style={{
-        backgroundImage: `url(${image})`,
-        opacity: index === currentImageIndex ? 1 : 0,
-        height: '60vh', // Increased height from 50vh to 60vh
-        width: '100%',
-          }}
-          aria-hidden="true"
-        />
+            <div
+              key={index}
+              className="absolute inset-0 bg-cover bg-center transition-opacity duration-1000 ease-in-out"
+              style={{
+                backgroundImage: `url(${image})`,
+                opacity: index === currentImageIndex ? 1 : 0,
+                height: '60vh',
+                width: '100%',
+              }}
+              aria-hidden="true"
+            />
           ))}
           <motion.div 
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="text-center text-white px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto relative z-10 [text-shadow:_0_1px_2px_rgba(0,0,0,0.8)]"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-center text-white px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto relative z-10 [text-shadow:_0_1px_2px_rgba(0,0,0,0.8)]"
           >
-        <h2 className="text-4xl font-bold mb-4">Hello, I am Stephen Mola</h2>
-        <p className="text-xl mb-8">Full-stack developer passionate about creating beautiful and functional web applications.</p>
-        <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
-          <a href="#contact">Get in touch</a>
-        </Button>
+            <h2 className="text-4xl font-bold mb-4">Hello, I am Stephen Mola</h2>
+            <p className="text-xl mb-8">Full-stack developer passionate about creating beautiful and functional web applications.</p>
+            <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
+              <a href="#contact">Get in touch</a>
+            </Button>
           </motion.div>
         </section>
 
-       
-{/* Skills Section */}
-<section id="skills" className="py-20">
-  <h2 className="text-3xl font-bold mb-8 text-center">My Skills</h2>
-  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-    {['aws', 'css', 'data-analysis', 'data-visualisation', 'docker', 'firebase', 'git', 'javascript', 'mongoDB', 'nodejs', 'postgres', 'python', 'react', 'sql', 'typescript', 'office'].map((skill) => (
-      <Card key={skill}>
-        <CardHeader>
-          <Image
-            src={`/assets/${skill.toLowerCase()}.png`}
-            alt={`${skill} logo`}
-            width={100}
-            height={50} 
-          />
-        </CardHeader>
-      </Card>
-    ))}
-  </div>
-</section>
-
-        {/* Error Message */}
-       {/* <ErrorMessage message="An error occurred. Please try again." />*\}
+        {/* Skills Section */}
+        <section id="skills" className="py-20">
+          <h2 className="text-3xl font-bold mb-8 text-center">My Skills</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {['aws', 'CSS', 'Data-Analysis', 'Data-Visualisation', 'Docker', 'Firebase', 'Git', 'Javascript', 'MongoDB', 'Nodejs', 'Postgres', 'Python', 'React', 'Sql', 'Typescript', 'Office'].map((skill) => (
+              <Card key={skill}>
+                <CardHeader>
+                  <Image
+                    src={`/assets/${skill.toLowerCase()}.png`}
+                    alt={`${skill} logo`}
+                    width={100}
+                    height={50} 
+                  />
+                </CardHeader>
+              <CardContent><strong>{skill}</strong></CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
 
         {/* Projects Section */}
         <section id="projects" className="py-20">
@@ -164,25 +162,25 @@ export default function Component() {
               <div className="flex space-x-4">
                 <Button variant="outline" size="icon">
                     <a href="https://github.com/Stevenalenga" target="_blank" rel="noopener noreferrer">
-                    <Image src="/socials/github.png" alt="GitHub" className="h-6 w-6" />
+                    <Image src="/socials/github.png" alt="GitHub" width={24} height={24} />
                     <span className="sr-only">GitHub</span>
                     </a>
                 </Button>
                 <Button variant="outline" size="icon">
                   <a href="https://www.linkedin.com/in/stephen-mola/" target="_blank" rel="noopener noreferrer">
-                  <Image src="/socials/linkedin.png" alt="Linked In" className="h-6 w-6" />
+                  <Image src="/socials/linkedin.png" alt="Linked In" width={24} height={24} />
                     <span className="sr-only">LinkedIn</span>
                   </a>
                 </Button>
                 <Button variant="outline" size="icon">
                   <a href="mailto:stevenkmola@gmail.com">
-                  <Image src="/socials/email.png" alt="Email" className="h-6 w-6" />
+                  <Image src="/socials/email.png" alt="Email" width={24} height={24} />
                     <span className="sr-only">Email</span>
                   </a>
                 </Button>
                 <Button variant="outline" size="icon">
                   <a href="https://wa.link/f73yev" target="_blank" rel="noopener noreferrer">
-                  <Image src="/socials/whatsappdark.png" alt="Whatsapp" className="h-6 w-6" />
+                  <Image src="/socials/whatsappdark.png" alt="Whatsapp" width={24} height={24} />
                   <span className="sr-only">Whatsapp</span>
                   </a>
                 </Button>

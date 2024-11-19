@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { GithubIcon, TwitterIcon, LinkedinIcon, RssIcon } from "lucide-react"
+import Image from 'next/image'
 import Link from "next/link"
 
 export default function DevBlog() {
@@ -94,19 +95,19 @@ export default function DevBlog() {
           <p className="text-sm text-muted-foreground mb-4 sm:mb-0">© 2023 DevBlog. All rights reserved.</p>
           <div className="flex space-x-4">
             <a href="#" className="text-muted-foreground hover:text-primary">
-              <GithubIcon size={20} />
+            <Image src="/socials/github.png" alt="GitHub" width={24} height={24} />
               <span className="sr-only">GitHub</span>
             </a>
             <a href="#" className="text-muted-foreground hover:text-primary">
-              <TwitterIcon size={20} />
+              <Image src="/socials/twitter.png" alt="twitter" width={24} height={24} />
               <span className="sr-only">Twitter</span>
             </a>
             <a href="#" className="text-muted-foreground hover:text-primary">
-              <LinkedinIcon size={20} />
+            <Image src="/socials/linkedin.png" alt="Linked In" width={24} height={24} />
               <span className="sr-only">LinkedIn</span>
             </a>
             <a href="#" className="text-muted-foreground hover:text-primary">
-              <RssIcon size={20} />
+            <Image src="/socials/whatsappdark.png" alt="Whatsapp" width={24} height={24} />
               <span className="sr-only">RSS Feed</span>
             </a>
           </div>
