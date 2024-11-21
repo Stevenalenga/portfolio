@@ -41,17 +41,17 @@ export default function Component() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-500 to-purple-500 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center flex-wrap">
-          <h1 className="text-2xl font-bold">Stephen Mola</h1>
+          <h1 className="text-2xl font-bold text-white">Stephen Mola</h1>
           <nav className="hidden md:flex space-x-4">
-            <a href="#about" className="hover:text-primary transition-colors">About</a>
-            <a href="#skills" className="hover:text-primary transition-colors">Skills</a>
-            <a href="#projects" className="hover:text-primary transition-colors">Projects</a>
-            <a href="#contact" className="hover:text-primary transition-colors">Contact</a>
-            <a href="/blog" className="hover:text-primary transition-colors">Blog</a>
+            <a href="#about" className="transition-colors text-white">About</a>
+            <a href="#skills" className="transition-colors text-white">Skills</a>
+            <a href="#projects" className="transition-colors text-white">Projects</a>
+            <a href="#contact" className="transition-colors text-white">Contact</a>
+            <a href="/blog" className="transition-colors text-white">Blog</a>
           </nav>
-          <Button variant="ghost" size="icon" className="md:hidden" onClick={toggleMenu}>
+          <Button variant="ghost" size="icon" className="md:hidden text-white" onClick={toggleMenu}>
             {isMenuOpen ? <X /> : <Menu />}
           </Button>
         </div>
@@ -201,11 +201,18 @@ export default function Component() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-muted py-4 mt-20">
-        <div className="container mx-auto px-4 text-center">
+      <footer className="bg-gradient-to-r from-blue-500 to-purple-500 py-4 mt-20">
+        <div className="container mx-auto px-4 text-center text-white">
           <p>&copy; 2024 Stephen Mola. All rights reserved.</p>
         </div>
       </footer>
+
+      <style jsx>{`
+        a:hover, button:hover {
+          background: linear-gradient(to right, #3b82f6, #9333ea);
+          color: white;
+        }
+      `}</style>
     </div>
   )
 }
