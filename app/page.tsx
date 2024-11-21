@@ -7,7 +7,7 @@ import { Menu, X } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 // import ErrorMessage from '../errors/errors' 
-
+import { useInView } from 'react-intersection-observer'
 
 const backgroundImages = [
   '/images/apiroutes.png',
@@ -19,6 +19,9 @@ const backgroundImages = [
 export default function Component() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const { ref: skillsRef, inView: skillsInView } = useInView({ triggerOnce: true })
+  const { ref: projectsRef, inView: projectsInView } = useInView({ triggerOnce: true })
+  const { ref: contactRef, inView: contactInView } = useInView({ triggerOnce: true })
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
 
@@ -71,7 +74,7 @@ export default function Component() {
       {/* Main Content */}
       <main className="container mx-auto px-4 pt-20">
         {/* About Section */}
-        <section id="about" className="relative py-40 overflow-hidden"> 
+        <section id="about" className="relative py-40 overflow-hidden min-h-screen flex items-center justify-center"> 
           {backgroundImages.map((image, index) => (
             <div
               key={index}
@@ -79,7 +82,7 @@ export default function Component() {
               style={{
                 backgroundImage: `url(${image})`,
                 opacity: index === currentImageIndex ? 1 : 0,
-                height: '60vh',
+                height: '100vh',
                 width: '100%',
               }}
               aria-hidden="true"
@@ -92,7 +95,7 @@ export default function Component() {
             className="text-center text-white px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto relative z-10 [text-shadow:_0_1px_2px_rgba(0,0,0,0.8)]"
           >
             <h2 className="text-4xl font-bold mb-4">Hello, I am Stephen Mola</h2>
-            <p className="text-xl mb-8">Full-stack developer passionate about creating beautiful and functional web applications.</p>
+            <p className="text-xl mb-8">Full-stack developer passionate about creating beautiful and functional web applications, APIs and Mobile Apps .</p>
             <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
               <a href="#contact">Get in touch</a>
             </Button>
@@ -100,27 +103,34 @@ export default function Component() {
         </section>
 
         {/* Skills Section */}
-        <section id="skills" className="py-20">
+        <section id="skills" ref={skillsRef} className="py-20 min-h-screen">
           <h2 className="text-3xl font-bold mb-8 text-center">My Skills</h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {['aws', 'CSS', 'Data-Analysis', 'Data-Visualisation', 'Docker', 'Firebase', 'Git', 'Javascript', 'MongoDB', 'Nodejs', 'Postgres', 'Python', 'React', 'Sql', 'Typescript', 'Office'].map((skill) => (
-              <Card key={skill}>
-                <CardHeader>
-                  <Image
-                    src={`/assets/${skill.toLowerCase()}.png`}
-                    alt={`${skill} logo`}
-                    width={100}
-                    height={50} 
-                  />
-                </CardHeader>
-              <CardContent><strong>{skill}</strong></CardContent>
-              </Card>
+            {['aws', 'CSS', 'Data-Analysis', 'Data-Visualisation', 'Docker', 'Firebase', 'Git', 'Javascript', 'MongoDB', 'Nodejs', 'Postgres', 'Python', 'React', 'Sql', 'Typescript', 'Office'].map((skill, index) => (
+              <motion.div
+                key={skill}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: skillsInView ? 1 : 0, x: skillsInView ? 0 : 50 }}
+                transition={{ duration: 0.5, delay: index * 0.2 }}
+              >
+                <Card>
+                  <CardHeader>
+                    <Image
+                      src={`/assets/${skill.toLowerCase()}.png`}
+                      alt={`${skill} logo`}
+                      width={100}
+                      height={50} 
+                    />
+                  </CardHeader>
+                  <CardContent><strong>{skill}</strong></CardContent>
+                </Card>
+              </motion.div>
             ))}
           </div>
         </section>
 
         {/* Projects Section */}
-        <section id="projects" className="py-20">
+        <section id="projects" ref={projectsRef} className="py-20 min-h-screen">
           <h2 className="text-3xl font-bold mb-8 text-center">My Projects</h2>
           <div className="grid md:grid-cols-2 gap-8">
             {[
@@ -134,7 +144,7 @@ export default function Component() {
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
+                animate={{ opacity: projectsInView ? 1 : 0, y: projectsInView ? 0 : 50 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <Card>
@@ -154,7 +164,7 @@ export default function Component() {
         </section>
 
         {/* Contact Section */}
-        <section id="contact" className="py-20">
+        <section id="contact" ref={contactRef} className="py-20 min-h-screen">
           <h2 className="text-3xl font-bold mb-8 text-center">Get in Touch</h2>
           <Card>
             <CardContent className="flex flex-col items-center space-y-4 pt-6">
