@@ -14,6 +14,8 @@ const backgroundImages = [
   '/images/code.png',
   '/images/dashboards.png',
   '/images/visualpages.png',
+  '/images/mobileui.png',
+  '/images/uidashboards.png',
 ]
 
 export default function Component() {
