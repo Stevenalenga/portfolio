@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import Image from 'next/image'
+
 // import ErrorMessage from '../errors/errors' 
 import { useInView } from 'react-intersection-observer'
 
@@ -97,38 +97,6 @@ export default function Component() {
             transition={{ duration: 0.5 }}
             className="text-center text-white px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto relative z-10 [text-shadow:_0_1px_2px_rgba(0,0,0,0.8)]"
           >
-<<<<<<< HEAD
-        <h2 className="text-4xl font-bold mb-4">Hello, I am Stephen Mola</h2>
-        <p className="text-xl mb-8">Full-stack developer passionate about creating beautiful and functional Web, APIs and Mobile Applications.</p>
-        <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
-          <a href="#contact">Get in touch</a>
-        </Button>
-          </motion.div>
-        </section>
-
-       
-{/* Skills Section */}
-<section id="skills" className="py-20">
-  <h2 className="text-3xl font-bold mb-8 text-center">My Skills</h2>
-  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-    {['aws', 'css', 'data-analysis', 'data-visualisation', 'docker', 'firebase', 'git', 'javascript', 'mongoDB', 'nodejs', 'postgres', 'python', 'react', 'sql', 'typescript', 'office'].map((skill) => (
-      <Card key={skill}>
-        <CardHeader>
-          <Image
-            src={`/assets/${skill.toLowerCase()}.png`}
-            alt={`${skill} logo`}
-            width={100}
-            height={50} 
-          />
-        </CardHeader>
-      </Card>
-    ))}
-  </div>
-</section>
-
-        {/* Error Message */}
-       {/* <ErrorMessage message="An error occurred. Please try again." />*\}
-=======
             <h2 className="text-4xl font-bold mb-4">Hello, I am Stephen Mola</h2>
             <p className="text-xl mb-8">Full-stack developer passionate about creating beautiful and functional web applications, APIs and Mobile Apps .</p>
             <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
@@ -163,7 +131,6 @@ export default function Component() {
             ))}
           </div>
         </section>
->>>>>>> websitev1
 
         {/* Projects Section */}
         <section id="projects" ref={projectsRef} className="py-20 min-h-screen">
@@ -208,21 +175,13 @@ export default function Component() {
               <div className="flex space-x-4">
                 <Button variant="outline" size="icon">
                     <a href="https://github.com/Stevenalenga" target="_blank" rel="noopener noreferrer">
-<<<<<<< HEAD
-                    <Image src="/socials/github.png" alt="GitHub" width={50} height={50} />
-=======
                     <Image src="/socials/github.png" alt="GitHub" width={24} height={24} />
->>>>>>> websitev1
                     <span className="sr-only">GitHub</span>
                     </a>
                 </Button>
                 <Button variant="outline" size="icon">
                   <a href="https://www.linkedin.com/in/stephen-mola/" target="_blank" rel="noopener noreferrer">
-<<<<<<< HEAD
-                  <Image src="/socials/linkedin.png" alt="LinkedIn" width={50} height={50} />
-=======
                   <Image src="/socials/linkedin.png" alt="Linked In" width={24} height={24} />
->>>>>>> websitev1
                     <span className="sr-only">LinkedIn</span>
                   </a>
                 </Button>
