@@ -23,7 +23,7 @@ export default function Component() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const { ref: skillsRef, inView: skillsInView } = useInView({ triggerOnce: true })
   const { ref: projectsRef, inView: projectsInView } = useInView({ triggerOnce: true })
-  const { ref: contactRef, inView: contactInView } = useInView({ triggerOnce: true })
+  const { ref: contactRef } = useInView({ triggerOnce: true })
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
 
