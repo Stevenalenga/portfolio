@@ -97,7 +97,7 @@ export default function Component() {
             className="text-center text-white px-4 sm:px-6 lg:px-8 max-w-3xl mx-auto relative z-10 [text-shadow:_0_1px_2px_rgba(0,0,0,0.8)]"
           >
             <h2 className="text-4xl font-bold mb-4">Hello, I am Stephen Mola</h2>
-            <p className="text-xl mb-8">Full-stack developer passionate about creating beautiful and functional web applications, APIs and Mobile Apps .</p>
+            <p className="text-xl mb-8">Full-Stack Developer passionate about creating beautiful and functional Web applications, APIs and Mobile Apps.</p>
             <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
               <a href="#contact">Get in touch</a>
             </Button>
@@ -170,7 +170,7 @@ export default function Component() {
           <h2 className="text-3xl font-bold mb-8 text-center">Get in Touch</h2>
           <Card>
             <CardContent className="flex flex-col items-center space-y-4 pt-6">
-              <p className="text-center mb-4">Feel free to reach out for collaborations or just a friendly hello</p>
+              <p className="text-center mb-4">Feel free to reach out for collaborations or just a friendly hello </p>
               <div className="flex space-x-4">
                 <Button variant="outline" size="icon">
                     <a href="https://github.com/Stevenalenga" target="_blank" rel="noopener noreferrer">

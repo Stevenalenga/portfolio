@@ -8,8 +8,8 @@ import Link from "next/link"
 export default function DevBlog() {
   const blogPosts = [
     {
-      title: "Getting Started with Next.js 13",
-      description: "Learn how to build modern web applications with Next.js 13 and its new App Router.",
+      title: "Getting Started with Next.js 15",
+      description: "Learn how to build modern web applications with Next.js 15 and its new App Router.",
       date: "2023-05-15",
       readTime: "5 min read",
     },
