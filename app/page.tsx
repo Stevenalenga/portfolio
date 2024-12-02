@@ -161,25 +161,25 @@ export default function Component() {
               <div className="flex space-x-4">
                 <Button variant="outline" size="icon">
                     <a href="https://github.com/Stevenalenga" target="_blank" rel="noopener noreferrer">
-                    <Image src="/socials/github.png" alt="GitHub" className="h-6 w-6" />
+                    <Image src="/socials/github.png" alt="GitHub" width={50} height={50} />
                     <span className="sr-only">GitHub</span>
                     </a>
                 </Button>
                 <Button variant="outline" size="icon">
                   <a href="https://www.linkedin.com/in/stephen-mola/" target="_blank" rel="noopener noreferrer">
-                  <Image src="/socials/linkedin.png" alt="Linked In" className="h-6 w-6" />
+                  <Image src="/socials/linkedin.png" alt="LinkedIn" width={50} height={50} />
                     <span className="sr-only">LinkedIn</span>
                   </a>
                 </Button>
                 <Button variant="outline" size="icon">
                   <a href="mailto:stevenkmola@gmail.com">
-                  <Image src="/socials/email.png" alt="Email" className="h-6 w-6" />
+                  <Image src="/socials/email.png" alt="Email" width={24} height={24} />
                     <span className="sr-only">Email</span>
                   </a>
                 </Button>
                 <Button variant="outline" size="icon">
                   <a href="https://wa.link/f73yev" target="_blank" rel="noopener noreferrer">
-                  <Image src="/socials/whatsappdark.png" alt="Whatsapp" className="h-6 w-6" />
+                  <Image src="/socials/whatsappdark.png" alt="Whatsapp" width={24} height={24} />
                   <span className="sr-only">Whatsapp</span>
                   </a>
                 </Button>
