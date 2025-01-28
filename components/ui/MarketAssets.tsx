@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { AlertCircle } from "lucide-react"
 
 interface Asset {
   name: string
@@ -20,15 +22,19 @@ interface CryptoApiResponse {
 
 interface StockApiResponse {
   "Global Quote": {
+    "01. symbol": string
     "05. price": string
     "10. change percent": string
   }
 }
 
+const ALPHA_VANTAGE_API_KEY = process.env.NEXT_PUBLIC_ALPHA_VANTAGE_API_KEY
+
 export function MarketAssets() {
   const [cryptoAssets, setCryptoAssets] = useState<Asset[]>([])
   const [stockAssets, setStockAssets] = useState<Asset[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchCryptoData = async () => {
@@ -36,6 +42,9 @@ export function MarketAssets() {
         const response = await fetch(
           "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=5&page=1&sparkline=false",
         )
+        if (!response.ok) {
+          throw new Error("Failed to fetch crypto data")
+        }
         const data: CryptoApiResponse[] = await response.json()
         setCryptoAssets(
           data.map((coin) => ({
@@ -47,34 +56,53 @@ export function MarketAssets() {
         )
       } catch (error) {
         console.error("Error fetching crypto data:", error)
+        setError("Failed to fetch cryptocurrency data. Please try again later.")
       }
     }
 
     const fetchStockData = async () => {
-      try {
-        const stocks = ["AAPL", "GOOGL", "MSFT", "AMZN", "TSLA"]
-        const stockData = await Promise.all(
-          stocks.map(async (symbol) => {
-            const response = await fetch(
-              `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${process.env.NEXT_PUBLIC_ALPHA_VANTAGE_API_KEY}`,
-            )
-            const data: StockApiResponse = await response.json()
-            const quote = data["Global Quote"]
-            return {
-              name: symbol,
-              symbol: symbol,
-              price: Number.parseFloat(quote["05. price"]),
-              change24h: Number.parseFloat(quote["10. change percent"].replace("%", "")),
-            }
-          }),
-        )
-        setStockAssets(stockData)
-      } catch (error) {
-        console.error("Error fetching stock data:", error)
+      const stocks = ["AAPL", "GOOGL", "MSFT", "AMZN", "TSLA"]
+      const stockData: Asset[] = []
+
+      for (const symbol of stocks) {
+        try {
+          const response = await fetch(
+            `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${ALPHA_VANTAGE_API_KEY}`,
+          )
+          if (!response.ok) {
+            throw new Error(`Failed to fetch stock data for ${symbol}`)
+          }
+          const data: StockApiResponse = await response.json()
+          const quote = data["Global Quote"]
+
+          if (!quote || !quote["01. symbol"]) {
+            throw new Error(`Invalid data received for ${symbol}`)
+          }
+
+          stockData.push({
+            name: quote["01. symbol"],
+            symbol: quote["01. symbol"],
+            price: Number.parseFloat(quote["05. price"]),
+            change24h: Number.parseFloat(quote["10. change percent"].replace("%", "")),
+          })
+
+          // Add a delay to avoid hitting API rate limits
+          await new Promise((resolve) => setTimeout(resolve, 1000))
+        } catch (error) {
+          console.error(`Error fetching stock data for ${symbol}:`, error)
+        }
       }
+
+      setStockAssets(stockData)
     }
 
-    Promise.all([fetchCryptoData(), fetchStockData()]).then(() => setLoading(false))
+    Promise.all([fetchCryptoData(), fetchStockData()])
+      .then(() => setLoading(false))
+      .catch((error) => {
+        console.error("Error fetching data:", error)
+        setError("An error occurred while fetching market data. Please try again later.")
+        setLoading(false)
+      })
   }, [])
 
   const renderAsset = (asset: Asset) => (
@@ -107,6 +135,16 @@ export function MarketAssets() {
           </CardContent>
         </Card>
       ))
+
+  if (error) {
+    return (
+      <Alert variant="destructive">
+        <AlertCircle className="h-4 w-4" />
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>{error}</AlertDescription>
+      </Alert>
+    )
+  }
 
   return (
     <div className="space-y-8">
