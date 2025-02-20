@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
-import { Button } from "@/components/ui/button"
-import { RefreshCw } from "lucide-react"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { AlertCircle } from "lucide-react"
 
 interface Asset {
   name: string
@@ -26,6 +26,7 @@ interface CryptoApiResponse {
 
 interface StockApiResponse {
   "Global Quote": {
+    "01. symbol": string
     "05. price": string
     "10. change percent": string
     "08. previous close": string
@@ -41,6 +42,8 @@ interface ForexApiResponse {
   }
 }
 
+const ALPHA_VANTAGE_API_KEY = process.env.NEXT_PUBLIC_ALPHA_VANTAGE_API_KEY
+
 export function MarketAssets() {
   const [cryptoAssets, setCryptoAssets] = useState<Asset[]>([])
   const [stockAssets, setStockAssets] = useState<Asset[]>([])
@@ -48,109 +51,74 @@ export function MarketAssets() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const fetchData = async () => {
-    setLoading(true)
-    setError(null)
-
-    try {
-      const [cryptoData, stockData, forexData] = await Promise.all([
-        fetchCryptoData(),
-        fetchStockData(),
-        fetchForexData(),
-      ])
-      setCryptoAssets(cryptoData)
-      setStockAssets(stockData)
-      setForexAssets(forexData)
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(`Failed to fetch market data: ${err.message}`)
-      } else {
-        setError("An unexpected error occurred. Please try again later.")
-      }
-      console.error("Error fetching market data:", err)
-    } finally {
-      setLoading(false)
-    }
-  }
-
   useEffect(() => {
-    fetchData()
-  }, [])
-
-  const fetchCryptoData = async (): Promise<Asset[]> => {
-    const response = await fetch(
-      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=5&page=1&sparkline=false",
-    )
-    if (!response.ok) {
-      throw new Error(`Failed to fetch crypto data: ${response.statusText}`)
+    const fetchCryptoData = async () => {
+      try {
+        const response = await fetch(
+          "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=5&page=1&sparkline=false",
+        )
+        if (!response.ok) {
+          throw new Error("Failed to fetch crypto data")
+        }
+        const data: CryptoApiResponse[] = await response.json()
+        setCryptoAssets(
+          data.map((coin) => ({
+            name: coin.name,
+            symbol: coin.symbol.toUpperCase(),
+            price: coin.current_price,
+            change24h: coin.price_change_percentage_24h,
+          })),
+        )
+      } catch (error) {
+        console.error("Error fetching crypto data:", error)
+        setError("Failed to fetch cryptocurrency data. Please try again later.")
+      }
     }
-    const data: CryptoApiResponse[] = await response.json()
-    return data.map((coin) => ({
-      name: coin.name,
-      symbol: coin.symbol.toUpperCase(),
-      price: coin.current_price,
-      change24h: coin.price_change_percentage_24h,
-      marketCap: coin.market_cap,
-      volume: coin.total_volume,
-    }))
-  }
 
-  const fetchStockData = async (): Promise<Asset[]> => {
-    const stocks = ["AAPL", "GOOGL", "MSFT", "AMZN", "TSLA"]
-    const stockData = await Promise.all(
-      stocks.map(async (symbol) => {
-        const response = await fetch(
-          `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${process.env.NEXT_PUBLIC_ALPHA_VANTAGE_API_KEY}`,
-        )
-        if (!response.ok) {
-          throw new Error(`Failed to fetch stock data for ${symbol}: ${response.statusText}`)
+    const fetchStockData = async () => {
+      const stocks = ["AAPL", "GOOGL", "MSFT", "AMZN", "TSLA"]
+      const stockData: Asset[] = []
+
+      for (const symbol of stocks) {
+        try {
+          const response = await fetch(
+            `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${ALPHA_VANTAGE_API_KEY}`,
+          )
+          if (!response.ok) {
+            throw new Error(`Failed to fetch stock data for ${symbol}`)
+          }
+          const data: StockApiResponse = await response.json()
+          const quote = data["Global Quote"]
+
+          if (!quote || !quote["01. symbol"]) {
+            throw new Error(`Invalid data received for ${symbol}`)
+          }
+
+          stockData.push({
+            name: quote["01. symbol"],
+            symbol: quote["01. symbol"],
+            price: Number.parseFloat(quote["05. price"]),
+            change24h: Number.parseFloat(quote["10. change percent"].replace("%", "")),
+          })
+
+          // Add a delay to avoid hitting API rate limits
+          await new Promise((resolve) => setTimeout(resolve, 1000))
+        } catch (error) {
+          console.error(`Error fetching stock data for ${symbol}:`, error)
         }
-        const data: StockApiResponse = await response.json()
-        const quote = data["Global Quote"]
-        if (!quote) {
-          console.error(`Invalid response for stock ${symbol}:`, data)
-          throw new Error(`Invalid response for stock ${symbol}`)
-        }
-        return {
-          name: symbol,
-          symbol: symbol,
-          price: Number.parseFloat(quote["05. price"]),
-          change24h: Number.parseFloat(quote["10. change percent"].replace("%", "")),
-          volume: Number.parseInt(quote["06. volume"]),
-        }
-      }),
-    )
-    return stockData
-  }
-  
-  const fetchForexData = async (): Promise<Asset[]> => {
-    const forexPairs = ["EURUSD", "EURGBP", "USDGBP"]
-    const forexData = await Promise.all(
-      forexPairs.map(async (pair) => {
-        const response = await fetch(
-          `https://www.alphavantage.co/query?function=CURRENCY_EXCHANGE_RATE&from_currency=${pair.slice(0, 3)}&to_currency=${pair.slice(3)}&apikey=${process.env.NEXT_PUBLIC_ALPHA_VANTAGE_API_KEY}`,
-        )
-        if (!response.ok) {
-          throw new Error(`Failed to fetch forex data for ${pair}: ${response.statusText}`)
-        }
-        const data: ForexApiResponse = await response.json()
-        const rate = data["Realtime Currency Exchange Rate"]
-        if (!rate) {
-          console.error(`Invalid response for forex pair ${pair}:`, data)
-          throw new Error(`Invalid response for forex pair ${pair}`)
-        }
-        const price = Number.parseFloat(rate["5. Exchange Rate"])
-        const prevPrice = (Number.parseFloat(rate["8. Bid Price"]) + Number.parseFloat(rate["9. Ask Price"])) / 2
-        return {
-          name: `${pair.slice(0, 3)}/${pair.slice(3)}`,
-          symbol: pair,
-          price: price,
-          change24h: ((price - prevPrice) / prevPrice) * 100,
-        }
-      }),
-    )
-    return forexData
-  }
+      }
+
+      setStockAssets(stockData)
+    }
+
+    Promise.all([fetchCryptoData(), fetchStockData()])
+      .then(() => setLoading(false))
+      .catch((error) => {
+        console.error("Error fetching data:", error)
+        setError("An error occurred while fetching market data. Please try again later.")
+        setLoading(false)
+      })
+  }, [])
 
   const renderAsset = (asset: Asset) => (
     <Card key={asset.symbol} className="bg-zinc-800 hover:bg-zinc-700 transition-all duration-300">
@@ -186,6 +154,16 @@ export function MarketAssets() {
           </CardContent>
         </Card>
       ))
+
+  if (error) {
+    return (
+      <Alert variant="destructive">
+        <AlertCircle className="h-4 w-4" />
+        <AlertTitle>Error</AlertTitle>
+        <AlertDescription>{error}</AlertDescription>
+      </Alert>
+    )
+  }
 
   return (
     <div className="space-y-8">
