@@ -34,8 +34,10 @@ export function MarketAssets() {
     const fetchCryptoData = async () => {
       try {
         const response = await fetch(
-          "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=5&page=1&sparkline=false",
+          "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=5&page=1&sparkline=false"
         )
+        if (!response.ok) throw new Error("Failed to fetch crypto data")
+
         const data: CryptoApiResponse[] = await response.json()
         setCryptoAssets(
           data.map((coin) => ({
@@ -43,7 +45,7 @@ export function MarketAssets() {
             symbol: coin.symbol.toUpperCase(),
             price: coin.current_price,
             change24h: coin.price_change_percentage_24h,
-          })),
+          }))
         )
       } catch (error) {
         console.error("Error fetching crypto data:", error)
@@ -57,14 +59,11 @@ export function MarketAssets() {
       for (const symbol of stocks) {
         try {
           const response = await fetch(
-            `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${process.env.NEXT_PUBLIC_ALPHA_VANTAGE_API_KEY}`,
+            `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${process.env.NEXT_PUBLIC_ALPHA_VANTAGE_API_KEY}`
           )
-          if (!response.ok) {
-            throw new Error(`Failed to fetch stock data for ${symbol}`)
-          }
+          if (!response.ok) throw new Error(`Failed to fetch stock data for ${symbol}`)
+
           const data: StockApiResponse = await response.json()
-          
-          // Check if we have valid data
           if (data["Global Quote"] && data["Global Quote"]["05. price"]) {
             stockData.push({
               name: symbol,
@@ -72,21 +71,23 @@ export function MarketAssets() {
               price: Number.parseFloat(data["Global Quote"]["05. price"]),
               change24h: Number.parseFloat(data["Global Quote"]["10. change percent"].replace("%", "")),
             })
-          } else {
-            console.warn(`Invalid or missing data for ${symbol}`)
           }
-
-          // Add delay between requests to avoid rate limiting
-          await new Promise(resolve => setTimeout(resolve, 1000))
         } catch (error) {
           console.error(`Error fetching stock data for ${symbol}:`, error)
         }
+        // Add a delay to avoid rate limiting
+        await new Promise((resolve) => setTimeout(resolve, 1000))
       }
-
       setStockAssets(stockData)
     }
 
-    Promise.all([fetchCryptoData(), fetchStockData()]).then(() => setLoading(false))
+    const fetchData = async () => {
+      await fetchCryptoData()
+      await fetchStockData()
+      setLoading(false)
+    }
+
+    fetchData()
   }, [])
 
   const renderAsset = (asset: Asset) => (
@@ -106,19 +107,17 @@ export function MarketAssets() {
   )
 
   const renderSkeletons = (count: number) =>
-    Array(count)
-      .fill(0)
-      .map((_, i) => (
-        <Card key={i} className="bg-zinc-800">
-          <CardHeader>
-            <Skeleton className="h-4 w-[200px]" />
-          </CardHeader>
-          <CardContent>
-            <Skeleton className="h-8 w-[100px] mb-2" />
-            <Skeleton className="h-4 w-[60px]" />
-          </CardContent>
-        </Card>
-      ))
+    Array.from({ length: count }, (_, i) => (
+      <Card key={i} className="bg-zinc-800">
+        <CardHeader>
+          <Skeleton className="h-4 w-[200px]" />
+        </CardHeader>
+        <CardContent>
+          <Skeleton className="h-8 w-[100px] mb-2" />
+          <Skeleton className="h-4 w-[60px]" />
+        </CardContent>
+      </Card>
+    ))
 
   return (
     <div className="space-y-8">
@@ -137,4 +136,3 @@ export function MarketAssets() {
     </div>
   )
 }
-
