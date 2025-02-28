@@ -33,12 +33,13 @@ export function MarketAssets() {
   useEffect(() => {
     const fetchCryptoData = async () => {
       try {
+        const cryptoIds = ["adventure-gold", "constitutiondao", "bitcoin", "solana", "xrp", "bnb"];
         const response = await fetch(
-          "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=5&page=1&sparkline=false"
-        )
-        if (!response.ok) throw new Error("Failed to fetch crypto data")
+          `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${cryptoIds.join(",")}&order=market_cap_desc&per_page=5&page=1&sparkline=false`
+        );
+        if (!response.ok) throw new Error("Failed to fetch crypto data");
 
-        const data: CryptoApiResponse[] = await response.json()
+        const data: CryptoApiResponse[] = await response.json();
         setCryptoAssets(
           data.map((coin) => ({
             name: coin.name,
@@ -46,11 +47,11 @@ export function MarketAssets() {
             price: coin.current_price,
             change24h: coin.price_change_percentage_24h,
           }))
-        )
+        );
       } catch (error) {
-        console.error("Error fetching crypto data:", error)
+        console.error("Error fetching crypto data:", error);
       }
-    }
+    };
 
     const fetchStockData = async () => {
       const stocks = ["AAPL", "GOOGL", "MSFT", "AMZN", "TSLA"]
