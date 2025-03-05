@@ -1,44 +1,57 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Skeleton } from "@/components/ui/skeleton"
+import { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Asset {
-  name: string
-  symbol: string
-  price: number
-  change24h: number
+  name: string;
+  symbol: string;
+  price: number;
+  change24h: number;
 }
 
 interface CryptoApiResponse {
-  name: string
-  symbol: string
-  current_price: number
-  price_change_percentage_24h: number
+  name: string;
+  symbol: string;
+  current_price: number;
+  price_change_percentage_24h: number;
 }
 
 interface StockApiResponse {
   "Global Quote": {
-    "05. price": string
-    "10. change percent": string
-  }
+    "05. price": string;
+    "10. change percent": string;
+  };
 }
 
 export function MarketAssets() {
-  const [cryptoAssets, setCryptoAssets] = useState<Asset[]>([])
-  const [stockAssets, setStockAssets] = useState<Asset[]>([])
-  const [loading, setLoading] = useState(true)
+  const [cryptoAssets, setCryptoAssets] = useState<Asset[]>([]);
+  const [stockAssets, setStockAssets] = useState<Asset[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchCryptoData = async () => {
       try {
+        const cryptoIds = [
+          "adventure-gold", 
+          "constitutiondao", 
+          "bitcoin", 
+          "solana", 
+          "ripple", 
+          "binacecoin", 
+          "ethereum",
+          "dogecoin"
+        ];
+        
         const response = await fetch(
-          "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=5&page=1&sparkline=false"
-        )
-        if (!response.ok) throw new Error("Failed to fetch crypto data")
+          `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${cryptoIds.join(",")}&order=market_cap_desc&per_page=8&page=1&sparkline=false`
+        );
+        
+        if (!response.ok) throw new Error("Failed to fetch crypto data");
 
-        const data: CryptoApiResponse[] = await response.json()
+        const data: CryptoApiResponse[] = await response.json();
         setCryptoAssets(
           data.map((coin) => ({
             name: coin.name,
@@ -46,49 +59,50 @@ export function MarketAssets() {
             price: coin.current_price,
             change24h: coin.price_change_percentage_24h,
           }))
-        )
+        );
       } catch (error) {
-        console.error("Error fetching crypto data:", error)
+        console.error("Error fetching crypto data:", error);
+        setError("Failed to fetch cryptocurrency data.");
       }
-    }
+    };
 
     const fetchStockData = async () => {
-      const stocks = ["AAPL", "GOOGL", "MSFT", "AMZN", "TSLA"]
-      const stockData: Asset[] = []
+      const stocks = ["AAPL", "GOOGL", "MSFT", "AMZN", "TSLA", "FB", "NVDA", "GMC", "NFLX", "INTC"];
+      const stockData: Asset[] = [];
 
       for (const symbol of stocks) {
         try {
           const response = await fetch(
             `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${process.env.NEXT_PUBLIC_ALPHA_VANTAGE_API_KEY}`
-          )
-          if (!response.ok) throw new Error(`Failed to fetch stock data for ${symbol}`)
+          );
+          if (!response.ok) throw new Error(`Failed to fetch stock data for ${symbol}`);
 
-          const data: StockApiResponse = await response.json()
+          const data: StockApiResponse = await response.json();
           if (data["Global Quote"] && data["Global Quote"]["05. price"]) {
             stockData.push({
               name: symbol,
               symbol: symbol,
               price: Number.parseFloat(data["Global Quote"]["05. price"]),
               change24h: Number.parseFloat(data["Global Quote"]["10. change percent"].replace("%", "")),
-            })
+            });
           }
         } catch (error) {
-          console.error(`Error fetching stock data for ${symbol}:`, error)
+          console.error(`Error fetching stock data for ${symbol}:`, error);
+          setError("Failed to fetch stock data.");
         }
-        // Add a delay to avoid rate limiting
-        await new Promise((resolve) => setTimeout(resolve, 1000))
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       }
-      setStockAssets(stockData)
-    }
+      setStockAssets(stockData);
+    };
 
     const fetchData = async () => {
-      await fetchCryptoData()
-      await fetchStockData()
-      setLoading(false)
-    }
+      await fetchCryptoData();
+      await fetchStockData();
+      setLoading(false);
+    };
 
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   const renderAsset = (asset: Asset) => (
     <Card key={asset.symbol} className="bg-zinc-800 hover:bg-zinc-700 transition-all duration-300">
@@ -104,7 +118,7 @@ export function MarketAssets() {
         </p>
       </CardContent>
     </Card>
-  )
+  );
 
   const renderSkeletons = (count: number) =>
     Array.from({ length: count }, (_, i) => (
@@ -117,22 +131,25 @@ export function MarketAssets() {
           <Skeleton className="h-4 w-[60px]" />
         </CardContent>
       </Card>
-    ))
+    ));
 
   return (
     <div className="space-y-8">
+      {error && <p className="text-red-500 text-center">{error}</p>}
+
       <div>
         <h3 className="text-2xl font-bold mb-4">Cryptocurrencies</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {loading ? renderSkeletons(5) : cryptoAssets.map(renderAsset)}
+          {loading ? renderSkeletons(8) : cryptoAssets.map(renderAsset)}
         </div>
       </div>
+
       <div>
         <h3 className="text-2xl font-bold mb-4">Stocks</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {loading ? renderSkeletons(5) : stockAssets.map(renderAsset)}
+          {loading ? renderSkeletons(10) : stockAssets.map(renderAsset)}
         </div>
       </div>
     </div>
-  )
+  );
 }
