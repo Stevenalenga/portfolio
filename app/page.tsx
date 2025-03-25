@@ -67,8 +67,9 @@ export default function Home() {
             </div>
             <h2 className="text-4xl font-bold mb-4">Hello, I am Stephen Mola</h2>
             <p className="text-xl mb-8">
-              Full-Stack Developer passionate about creating beautiful and functional Web applications, APIs and Mobile
-              Apps.
+              A growing Developer passionate about creating beautiful and functional Web applications, APIs and Mobile
+              Apps. I enjoy working with Typescript, Node.js, Python and other modern technologies. 
+              I eager to grow in the field especially in automation and AI and leverage my skills to build innovative solutions.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild className="bg-yellow-300 text-zinc-900 hover:bg-yellow-400 transition-all duration-300">
@@ -216,6 +217,20 @@ export default function Home() {
           <h2 className="text-3xl font-bold mb-8 text-center">Market Assets</h2>
           <div className="bg-zinc-800 p-6 rounded-lg shadow-lg">
             <MarketAssets />
+            <div className="mt-6 text-center">
+              <Button
+          asChild
+          className="bg-yellow-300 text-zinc-900 hover:bg-yellow-400 transition-all duration-300"
+              >
+          <a
+            href="https://www.binance.com/referral/earn-together/refertoearn2000usdc/claim?hl=en&ref=GRO_14352_EKCZY&utm_source=referralmode"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Join Binance Now
+          </a>
+              </Button>
+            </div>
           </div>
         </section>
 
