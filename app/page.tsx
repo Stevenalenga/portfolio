@@ -217,34 +217,7 @@ export default function Home() {
           <h2 className="text-3xl font-bold mb-8 text-center">Market Assets</h2>
             <div className="bg-zinc-800 p-6 rounded-lg shadow-lg space-y-6">
             <MarketAssets />
-            <div className="text-center">
-              <Button
-              asChild
-              className="bg-yellow-300 text-zinc-900 hover:bg-yellow-400 transition-all duration-300 rounded-full px-4 py-2 text-sm"
-              >
-              <a
-                href="https://www.binance.com/referral/earn-together/refertoearn2000usdc/claim?hl=en&ref=GRO_14352_EKCZY&utm_source=referralmode"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Join Binance Now to trade crypto
-              </a>
-              </Button>
-            </div>
-            <div className="text-center">
-              <Button
-              asChild
-              className="bg-yellow-300 text-zinc-900 hover:bg-yellow-400 transition-all duration-300 rounded-full px-4 py-2 text-sm"
-              >
-              <a
-                href="https://www.tradingview.com/pricing/?share_your_love=stephenx5am8"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Join Trading View Now to trade Stocks
-              </a>
-              </Button>
-            </div>
+            
             </div>
           
         </section>
