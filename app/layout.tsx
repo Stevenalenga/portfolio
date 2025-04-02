@@ -43,6 +43,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1873939027879602"
+          crossOrigin="anonymous"
+        ></script>
+      </head>
       <body className={`${inter.className} antialiased bg-zinc-900 text-zinc-100 min-h-screen flex flex-col`}>
         <SiteHeader />
         <main className="flex-grow">{children}</main>
