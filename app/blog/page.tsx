@@ -58,7 +58,9 @@ export default function DevBlog() {
                   <p>{post.description}</p>
                 </CardContent>
                 <CardFooter>
-                  <Button variant="outline">Read More</Button>
+                    <Link href={`/blog/chapters/${post.title.toLowerCase().replace(/ /g, "-")}`}>
+                    <Button variant="outline">Read More</Button>
+                    </Link>
                 </CardFooter>
               </Card>
             ))}
