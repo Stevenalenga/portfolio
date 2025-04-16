@@ -1,50 +1,57 @@
 import { NextResponse } from "next/server"
 import clientPromise from "@/lib/mongodb"
-import type { Blog } from "@/lib/models"
 
-export async function GET() {
+export async function GET(request: Request, { params }: { params: { slug: string } }) {
   try {
     const client = await clientPromise
     const db = client.db("blogDatabase")
 
-    const blogs = await db.collection("blogs").find({}).sort({ datePosted: -1 }).toArray()
+    const blog = await db.collection("blogs").findOne({ slug: params.slug })
 
-    return NextResponse.json(blogs)
+    if (!blog) {
+      return NextResponse.json({ error: "Blog not found" }, { status: 404 })
+    }
+
+    return NextResponse.json(blog)
   } catch (e) {
     console.error(e)
-    return NextResponse.json({ error: "Failed to fetch blogs" }, { status: 500 })
+    return NextResponse.json({ error: "Failed to fetch blog" }, { status: 500 })
   }
 }
 
-export async function POST(request: Request) {
+export async function PUT(request: Request, { params }: { params: { slug: string } }) {
   try {
     const client = await clientPromise
     const db = client.db("blogDatabase")
     const body = await request.json()
 
-    const newBlog: Blog = {
-      title: body.title,
-      body: body.body,
-      datePosted: new Date(),
-      comments: [],
-      likes: 0,
-      slug: body.title
-        .toLowerCase()
-        .replace(/[^\w\s]/gi, "")
-        .replace(/\s+/g, "-"),
+    const result = await db.collection("blogs").updateOne({ slug: params.slug }, { $set: body })
+
+    if (result.matchedCount === 0) {
+      return NextResponse.json({ error: "Blog not found" }, { status: 404 })
     }
 
-    const result = await db.collection("blogs").insertOne(newBlog)
-
-    return NextResponse.json(
-      {
-        message: "Blog created successfully",
-        id: result.insertedId,
-      },
-      { status: 201 },
-    )
+    return NextResponse.json({ message: "Blog updated successfully" })
   } catch (e) {
     console.error(e)
-    return NextResponse.json({ error: "Failed to create blog" }, { status: 500 })
+    return NextResponse.json({ error: "Failed to update blog" }, { status: 500 })
+  }
+}
+
+export async function DELETE(request: Request, { params }: { params: { slug: string } }) {
+  try {
+    const client = await clientPromise
+    const db = client.db("blogDatabase")
+
+    const result = await db.collection("blogs").deleteOne({ slug: params.slug })
+
+    if (result.deletedCount === 0) {
+      return NextResponse.json({ error: "Blog not found" }, { status: 404 })
+    }
+
+    return NextResponse.json({ message: "Blog deleted successfully" })
+  } catch (e) {
+    console.error(e)
+    return NextResponse.json({ error: "Failed to delete blog" }, { status: 500 })
   }
 }
