@@ -3,8 +3,9 @@ import Link from "next/link"
 export default function Home() {
   return (
     <div className="container mx-auto px-4 py-12">
+      <header className="bg-background border-b"></header>
       <div className="text-center max-w-3xl mx-auto">
-        <h1 className="text-4xl font-bold mb-6">Welcome to Our Blog</h1>
+        <h1 className="text-4xl font-bold mb-6">Welcome to Our Blog</h1> 
         <p className="text-xl text-gray-600 mb-8">Discover the latest articles, news, and insights from our team.</p>
         <Link
           href="/blog/blogs"
