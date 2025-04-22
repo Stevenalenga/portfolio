@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from 'next/font/google'
+import { Inter } from "next/font/google";
 import "./globals.css";
-import SiteHeader from "@/components/ui/header";
+import ClientHeader from "@/components/ClientHeader";
 import SiteFooter from "@/components/ui/footer";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Stephen Mola Portfolio",
@@ -50,8 +50,10 @@ export default function RootLayout({
           crossOrigin="anonymous"
         ></script>
       </head>
-      <body className={`${inter.className} antialiased bg-zinc-900 text-zinc-100 min-h-screen flex flex-col`}>
-        <SiteHeader />
+      <body
+        className={`${inter.className} antialiased bg-zinc-900 text-zinc-100 min-h-screen flex flex-col`}
+      >
+        <ClientHeader />
         <main className="flex-grow">{children}</main>
         <SiteFooter />
       </body>
