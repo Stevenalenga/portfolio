@@ -1,109 +1,37 @@
 "use client"
 
-import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import Image from "next/image"
-
-const navItems = ["About", "Skills", "Projects", "Contact", "Blog"]
+import { Button } from "@/components/ui/button"
 
 export default function SiteHeader() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
-
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
+  const navItems = [
+    { name: "About", href: "/" },
+    { name: "Skills", href: "/skills" },
+    { name: "Projects", href: "/projects" },
+    { name: "Market Assets", href: "/market-assets" },
+    { name: "Contact", href: "/contact" },
+  ]
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-transparent">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center backdrop-blur-sm">
-        <Logo />
-        <DesktopNav />
-        <MobileMenuButton isOpen={isMenuOpen} onClick={toggleMenu} />
-      </div>
-      <MobileNav isOpen={isMenuOpen} onClose={toggleMenu} />
+    <header className="fixed top-0 left-0 right-0 z-50 bg-zinc-900/80 backdrop-blur-sm shadow-md">
+      <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
+        <Link href="/" className="text-2xl font-bold text-yellow-300 hover:text-yellow-400 transition-colors">
+          Stephen Mola
+        </Link>
+        <div className="hidden md:flex space-x-6">
+          {navItems.map((item) => (
+            <Button
+              key={item.name}
+              asChild
+              variant="ghost"
+              className="text-zinc-100 hover:bg-zinc-700 hover:text-yellow-300"
+            >
+              <Link href={item.href}>{item.name}</Link>
+            </Button>
+          ))}
+        </div>
+        {/* Mobile navigation can be added here using Sheet/Dialog */}
+      </nav>
     </header>
   )
 }
-
-function Logo() {
-  return (
-    <motion.div
-      className="text-2xl font-bold text-white"
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <Image src="/stephenmola.png" alt="Logo" width={75} height={75} />
-    </motion.div>
-  )
-}
-
-function DesktopNav() {
-  return (
-    <nav className="hidden md:flex space-x-4">
-      {navItems.map((item, index) => (
-        <NavLink key={item} item={item} index={index} />
-      ))}
-    </nav>
-  )
-}
-
-function NavLink({ item, index }: { item: string; index: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-    >
-      <Link
-        href={item === "Blog" ? "/blog" : `#${item.toLowerCase()}`}
-        className="text-white hover:text-yellow-300 transition-colors"
-      >
-        {item}
-      </Link>
-    </motion.div>
-  )
-}
-
-function MobileMenuButton({ isOpen, onClick }: { isOpen: boolean; onClick: () => void }) {
-  return (
-    <Button variant="ghost" size="icon" className="md:hidden text-white" onClick={onClick}>
-      {isOpen ? <X /> : <Menu />}
-    </Button>
-  )
-}
-
-function MobileNav({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-  return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.nav
-          className="fixed top-0 right-0 bottom-0 w-64 bg-zinc-900 z-40 p-4 flex flex-col justify-center"
-          initial={{ x: "100%" }}
-          animate={{ x: 0 }}
-          exit={{ x: "100%" }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        >
-          {navItems.map((item, index) => (
-            <motion.div
-              key={item}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-            >
-              <Link
-                href={item === "Blog" ? "/blog" : `#${item.toLowerCase()}`}
-                className="block py-2 text-white hover:text-yellow-300 transition-colors"
-                onClick={onClose}
-              >
-                {item}
-              </Link>
-            </motion.div>
-          ))}
-        </motion.nav>
-      )}
-    </AnimatePresence>
-  )
-}
-
