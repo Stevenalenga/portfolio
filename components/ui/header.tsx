@@ -2,6 +2,9 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet"
+import { Menu } from "lucide-react"
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
 
 export default function SiteHeader() {
   const navItems = [
@@ -30,7 +33,36 @@ export default function SiteHeader() {
             </Button>
           ))}
         </div>
-        {/* Mobile navigation can be added here using Sheet/Dialog */}
+        {/* Mobile navigation using Sheet */}
+        <div className="md:hidden">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="text-zinc-100 hover:bg-zinc-700">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Toggle navigation menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="bg-zinc-900 text-zinc-100 border-l border-zinc-700">
+              <VisuallyHidden asChild>
+                <SheetTitle>Mobile Navigation Menu</SheetTitle>
+              </VisuallyHidden>
+              <VisuallyHidden asChild>
+                <SheetDescription>Navigation links for the website.</SheetDescription>
+              </VisuallyHidden>
+              <div className="flex flex-col gap-4 py-6">
+                {navItems.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="text-lg font-semibold hover:text-yellow-300 transition-colors"
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
       </nav>
     </header>
   )
