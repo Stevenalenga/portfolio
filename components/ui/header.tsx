@@ -18,8 +18,15 @@ export default function SiteHeader() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-zinc-900/80 backdrop-blur-sm shadow-md">
       <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-bold text-yellow-300 hover:text-yellow-400 transition-colors">
-          Stephen Mola
+        <Link href="/" className="flex items-center space-x-2 text-2xl font-bold text-yellow-300 hover:text-yellow-400 transition-colors">
+          <img
+            src="stephenmola.png" // Update this path if your logo file name or location is different
+            alt="Stephen Mola Logo"
+            width={36}
+            height={36}
+            className="h-9 w-9"
+          />
+          <span>Stephen Mola</span>
         </Link>
         <div className="hidden md:flex space-x-6">
           {navItems.map((item) => (

@@ -49,6 +49,7 @@ export function MarketAssets() {
           "dogecoin",
           "cardano", // Added Cardano
           "litecoin", // Added Litecoin
+          "chainlink", // Added Chainlink (LINK)
         ]
         const response = await fetch(
           `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${cryptoIds.join(
